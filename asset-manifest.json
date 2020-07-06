@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/DemoSocialNetwork/static/css/main.6aa4ffdf.chunk.css",
+    "main.js": "/DemoSocialNetwork/static/js/main.e85dd5e3.chunk.js",
+    "main.js.map": "/DemoSocialNetwork/static/js/main.e85dd5e3.chunk.js.map",
+    "runtime-main.js": "/DemoSocialNetwork/static/js/runtime-main.e308061e.js",
+    "runtime-main.js.map": "/DemoSocialNetwork/static/js/runtime-main.e308061e.js.map",
+    "static/js/2.4a3e8f83.chunk.js": "/DemoSocialNetwork/static/js/2.4a3e8f83.chunk.js",
+    "static/js/2.4a3e8f83.chunk.js.map": "/DemoSocialNetwork/static/js/2.4a3e8f83.chunk.js.map",
+    "index.html": "/DemoSocialNetwork/index.html",
+    "precache-manifest.9efbe7bd810929a1ce94dd27736f1ceb.js": "/DemoSocialNetwork/precache-manifest.9efbe7bd810929a1ce94dd27736f1ceb.js",
+    "service-worker.js": "/DemoSocialNetwork/service-worker.js",
+    "static/css/main.6aa4ffdf.chunk.css.map": "/DemoSocialNetwork/static/css/main.6aa4ffdf.chunk.css.map",
+    "static/js/2.4a3e8f83.chunk.js.LICENSE.txt": "/DemoSocialNetwork/static/js/2.4a3e8f83.chunk.js.LICENSE.txt",
+    "static/media/loader.gif": "/DemoSocialNetwork/static/media/loader.3b00bc57.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e308061e.js",
+    "static/js/2.4a3e8f83.chunk.js",
+    "static/css/main.6aa4ffdf.chunk.css",
+    "static/js/main.e85dd5e3.chunk.js"
+  ]
+}

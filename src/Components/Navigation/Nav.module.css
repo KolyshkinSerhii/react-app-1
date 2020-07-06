@@ -1,0 +1,19 @@
+.nav {
+    grid-area: n;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #9C122A;
+    margin-right: 10px;
+    border-radius: 2px;
+    padding: 20px;
+}
+
+.item a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.item a.active {
+    color: #000000;
+}

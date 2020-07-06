@@ -1,0 +1,12 @@
+.user {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 100%;
+    margin-top: 20px;
+}
+
+img {
+    width: 70px;
+    border-radius: 50%;
+    border: 1px solid black
+}

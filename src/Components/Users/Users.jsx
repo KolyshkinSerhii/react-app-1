@@ -14,11 +14,11 @@ const Users = ({ users, totalItemsCount, pageSize, onPageChanged, currentPage, .
             <div className={s.user}>
                 {
                     users.map(u => <User key={u.id}
-                        user={u}
-                        followingInProgress={props.followingInProgress}
-                        follow={props.follow}
-                        unfollow={props.unfollow}
-                         />)
+                            user={u}
+                            followingInProgress={props.followingInProgress}
+                            follow={props.follow}
+                            unfollow={props.unfollow}
+                            />)
                 }
             </div>
         </div>

@@ -5,7 +5,7 @@ import SendMyPost from '../ProfileForms/MyPostForm';
 
 const MyPosts = React.memo(props => {
   
-  let postElements = props.posts.map(elem => <Post message={elem.message} likeCounts={elem.likeCounts} />);
+  let postElements = props.posts.map(elem => <Post key={elem.id} message={elem.message} likeCounts={elem.likeCounts} />);
 
   return (
     <div>

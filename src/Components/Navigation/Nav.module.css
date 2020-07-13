@@ -17,3 +17,7 @@
 .item a.active {
     color: #000000;
 }
+
+.friendsOnline {
+    margin-top: 20px;
+}

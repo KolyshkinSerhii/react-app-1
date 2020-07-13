@@ -1,11 +1,10 @@
-import {
-    usersAPI,
-    profileAPI
-} from '../API/API';
+import { usersAPI, profileAPI } from '../API/API';
+import {stopSubmit} from 'redux-form'
 
 const ADD_POST = 'network/profile/UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'network/profile/SET-USER-PROFILE';
-const SET_STATUS = 'network/profile/SET-STATUS'
+const SET_STATUS = 'network/profile/SET-STATUS';
+const SET_PHOTO = 'network/profile/SET-PHOTO'
 
 
 let initialState = {
@@ -48,6 +47,12 @@ const profileReducer = (state = initialState, action) => {
                     status: action.status
                 };
             }
+            case SET_PHOTO: {
+                return {
+                    ...state,
+                    profile: {...state.profile, photos: action.photos}
+                }
+            }
             default:
                 return state;
     }
@@ -56,6 +61,10 @@ const profileReducer = (state = initialState, action) => {
 export const addPostActionCreator = (addPost) => ({
     type: ADD_POST,
     addPost
+})
+export const setPhoto = (photos) => ({
+    type: SET_PHOTO,
+    photos
 })
 export const setStatus = (status) => ({
     type: SET_STATUS,
@@ -81,6 +90,35 @@ export const updateStatus = (status) => async (dispatch) => {
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status))
     }
+}
+
+export const savePhoto = (file) => async (dispatch) => {
+    let response = await profileAPI.savePhoto(file);
+        if (response.data.resultCode === 0) {
+            dispatch(setPhoto(response.data.data.photos))
+        }
+}
+
+export const saveProfile = (file) => async (dispatch, getState) => {
+    const userId = getState().auth.userId;
+    let response = await profileAPI.saveProfile(file);
+        if (response.data.resultCode === 0) {
+            dispatch(getUserProfile(userId));
+        } else {
+            let wrongNetwork = response.data.messages[0]
+              .slice(
+                response.data.messages[0].indexOf(">") + 1,
+                response.data.messages[0].indexOf(")")
+              )
+              .toLocaleLowerCase();
+            dispatch(
+              stopSubmit("edit-profile", {
+                contacts: { [wrongNetwork]: response.data.messages[0] }
+              })
+            );
+            return Promise.reject(response.data.messages[0]);
+          }
+        
 }
 
 export default profileReducer;

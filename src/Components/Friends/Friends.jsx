@@ -1,5 +1,5 @@
 import React from 'react';
-import s from "./Friends.modules.css";
+import s from "./Friends.module.css";
 
 const Friends = () => {
     return (

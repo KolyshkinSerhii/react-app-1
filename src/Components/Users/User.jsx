@@ -7,11 +7,11 @@ const User = ({user, followingInProgress, unfollow, follow}, ...props) => {
         return (
             <div className={s.user}>
                 <div>
-                    <NavLink to={'/profile/' + user.id}>
+                    {<NavLink to={'/profile/' + user.id}>
                         <div>
                             <img src={user.photos.small != null ? user.photos.small : userPhoto} alt=""></img>
                         </div>
-                    </NavLink>
+                    </NavLink>}
                     <div>
                         {user.followed ? 
                             <button disabled={followingInProgress.some(id => id === user.id)} onClick={ () => {unfollow(user.id)}}>Unfollow</button> 

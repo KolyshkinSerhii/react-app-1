@@ -1,8 +1,7 @@
 import React from 'react';
 import './App.css';
 import Navigation from './Components/Navigation/Nav.jsx';
-import { Route, withRouter } from 'react-router-dom';
-import Friends from './Components/Friends/Friends';
+import { Route, withRouter, Redirect } from 'react-router-dom';
 import News from './Components/News/News';
 import Music from './Components/Music/Music';
 import Settings from './Components/Settings/Settings';
@@ -15,6 +14,7 @@ import { connect } from 'react-redux';
 import {initializeApp} from '../src/Redux/App-reducer'
 import { compose } from 'redux';
 import Preloader from './Components/common/loader';
+import Friends from './Components/Friends/Friends';
 
 class App extends React.Component {
 
@@ -33,6 +33,7 @@ class App extends React.Component {
           <HeaderContainer />
           <Navigation />
             <div className="app-wrapper-content">
+              <Route path="/" render={() => <Redirect to={'/profile'} />} />
               <Route path="/dialogs" render={ () => <DialogsContainer />}/>
               <Route path="/profile/:userId?" render={ () => <ProfileContainer />}/>
               <Route path="/friends" render={ () => <Friends />}/>

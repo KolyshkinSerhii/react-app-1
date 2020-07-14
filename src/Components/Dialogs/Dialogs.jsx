@@ -13,7 +13,7 @@ const Dialogs = (props) => {
     let dialogsElements = state.dialogs.map(dialog => <DialogItem name={dialog.name} id={dialog.id} />);
 
     let messageElements = state.messages.map(m => <Message message={m.message} />);
-
+    
     return (
         <div className={s.dialogs}>
             <div className={s.dialogs_item}>

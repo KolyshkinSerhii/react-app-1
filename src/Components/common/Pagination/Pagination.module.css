@@ -1,0 +1,15 @@
+.paginationBlock {
+    margin: 5px;
+}
+
+.pageNumber {
+    margin: 2px;
+}
+.pageNumber.selectedPage {
+    font-weight: 700;
+    border-bottom: solid black;
+}
+
+button {
+    margin: 0 5px;
+}

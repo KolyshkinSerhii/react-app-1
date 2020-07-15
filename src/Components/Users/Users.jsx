@@ -21,6 +21,7 @@ const Users = ({ users, totalItemsCount, pageSize, onPageChanged, currentPage, .
                             />)
                 }
             </div>
+            
         </div>
     )
 }

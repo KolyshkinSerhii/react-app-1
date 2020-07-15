@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import s from './Pagination.modules.css'
+import s from "./Pagination.module.css";
+import cn from 'classnames'
 
 
 const Pagination = ({totalItemsCount, pageSize, onPageChanged, currentPage, portionSize = 10}) => {
@@ -16,23 +17,21 @@ const Pagination = ({totalItemsCount, pageSize, onPageChanged, currentPage, port
         let rightPortionNumber = portionNumber * portionSize;
 
         return ( 
+                <div className={s.paginationBlock}>
+                    {portionNumber > 1 && 
+                    <button onClick={ () => {setPortionNumber(portionNumber - 1)}}>PREV</button>}
 
-            <div className={s.paginationBlock}>
-                <div className={s.pagination}>
-                {portionNumber > 1 && 
-                <button onClick={ () => {setPortionNumber(portionNumber - 1)}}>PREV</button>}
+                        {pages
+                        .filter(p => p >= leftPotionNumber && p <= rightPortionNumber)
+                        .map((p) => {
+                        return <span className={cn ({
+                            [s.selectedPage] : currentPage === p}, s.pageNumber)} 
+                            key ={p} 
+                            onClick={() => {onPageChanged(p)}}>{p}</span>
+                        })}
 
-                    {pages
-                    .filter(p => p >= leftPotionNumber && p <= rightPortionNumber)
-                    .map((p) => {
-                    return   <span className={currentPage === p && s.selectedPage} 
-                        key ={p} 
-                        onClick={() => {onPageChanged(p)}}>{p}</span>
-                    })}
-
-                {portionCount > portionNumber && 
-                <button onClick={ () => {setPortionNumber(portionNumber + 1)}}>NEXT</button>}
-            </div>
-            </div>
+                    {portionCount > portionNumber && 
+                    <button onClick={ () => {setPortionNumber(portionNumber + 1)}}>NEXT</button>}
+                </div>
     )}
 export default Pagination;

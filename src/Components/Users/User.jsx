@@ -3,7 +3,7 @@ import userPhoto from "..//..//Images/user.png";
 import { NavLink } from 'react-router-dom';
 import s from './User.module.css'
 
-const User = ({user, followingInProgress, unfollow, follow}, ...props) => {
+const User = ({user, followingInProgress, unfollow, follow}) => {
         return (
             <div className={s.user}>
                 <div>

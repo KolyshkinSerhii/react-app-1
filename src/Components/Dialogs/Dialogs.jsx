@@ -21,7 +21,7 @@ const Dialogs = (props) => {
             </div>
             <div className={s.messages}>
                 {messageElements}
-                <SendMessage sendNewMessage={props.sendNewMessage}/>
+                <SendMessage sendNewMessage={props.sendNewMessage} />
             </div>
         </div>
     );

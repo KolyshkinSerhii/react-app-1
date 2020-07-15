@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm, Field, reset } from 'redux-form';
 import { Textarea } from '../../../common/ControlForms';
 import required, { maxLengthCreator } from '../../../../Utilities/Validation/Validator';
 
@@ -8,12 +8,17 @@ let maxLength100 = maxLengthCreator(100)
 const SendMessage = (props) => {
 
 let addNewMessage = (value) => {
-    props.sendNewMessage(value.newMessageBody)
+    props.sendNewMessage(value.newMessageBody);
+}
+
+const onSubmitSuccess = (formValues, dispatch) => {
+    dispatch(reset ('dialogsSendMessageForm'));
 }
 
     return (
         <div>
-            <SendMessageReduxForm onSubmit={addNewMessage}/>
+            <SendMessageReduxForm onSubmit={addNewMessage}
+                                onSubmitSuccess={onSubmitSuccess}/>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import { reduxForm, reset} from 'redux-form';
 import required, {maxLengthCreator } from '../../../Utilities/Validation/Validator';
 import { Textarea, createField } from '../../common/ControlForms';
 
@@ -10,17 +10,20 @@ const SendMyPost = (props) => {
     let onAddNewPost = (value) => {
         props.addNewPost(value.addPost);
       }
-
+    const onSubmitSuccess = (formValues, dispatch) => {
+        dispatch(reset ('sendMyPost'));
+    }
     return (
         <div>
-            <SendMessageReduxForm onSubmit={onAddNewPost}/>
+            <SendMessageReduxForm onSubmit={onAddNewPost}
+                                onSubmitSuccess={onSubmitSuccess} />
         </div>
     )
 }
 
-const SendMyPostForm = ({handleSubmit}) => {
+const SendMyPostForm = (props) => {
     return (
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={props.handleSubmit}>
                 {createField('New post', 'addPost', [required, maxLength100], Textarea, {}, '')}
                 <div>
                     <button>Add post</button>

@@ -8,7 +8,7 @@ import thunkMiddleware from "redux-thunk";
 import appReducer from "./App-reducer";
 
 
-let reducers = combineReducers({
+let rootReducers = combineReducers({
     profilePage: profileReducer,
     messagesPage: messagesReducer,
     usersPage: usersReducer,
@@ -17,8 +17,11 @@ let reducers = combineReducers({
     app: appReducer
 });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleware));
+type RootReducersType = typeof rootReducers
+export type AppStateType = ReturnType<RootReducersType>
 
-export default store;
+let store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
 
-window.store = store;
+export default store
+// @ts-ignore
+window.store = store

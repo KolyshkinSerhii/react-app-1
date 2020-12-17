@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from "../API/API";
+import {authAPI, ResultCodesEnum, ResultCodesEnumForCaptcha, securityAPI} from "../API/API";
 import {stopSubmit} from "redux-form"
 
 const SET_USER_DATA = 'network/auth/SET-USER-DATA';
@@ -58,26 +58,26 @@ export const setCaptchaUrlSuccess = (captchaUrl: string) => ({
 });
 
 export const getAuthUserData = () => async (dispatch: any) => {
-    let response = await authAPI.me();
-    if (response.data.resultCode === 0) {
+    let MeData = await authAPI.me();
+    if (MeData.resultCode === ResultCodesEnum.Success) {
         let {
             id,
             login,
             email
-        } = response.data.data;
+        } = MeData.data;
         dispatch(setAuthUserData(id, email, login, true));
     }
 }
 
 export const login = (email: string, password: string, rememberMe: boolean, captcha: string) => async (dispatch: any) => {
-    let response = await authAPI.login(email, password, rememberMe, captcha);
-    if (response.data.resultCode === 0) {
+    let LoginData = await authAPI.login(email, password, rememberMe, captcha);
+    if (LoginData.resultCode === ResultCodesEnum.Success) {
         dispatch(getAuthUserData())
     } else {
-        if (response.data.resultCode === 10) {
+        if (LoginData.resultCode === ResultCodesEnumForCaptcha.CaptchaIsRequered) {
             dispatch(getCaptchaUrl())
         }
-        let message = response.data.messages.length > 0 ? response.data.messages[0] : "some error";
+        let message = LoginData.messages.length > 0 ? LoginData.messages[0] : "some error";
         dispatch(stopSubmit('login', {
             _error: message
         }));
@@ -91,8 +91,8 @@ export const getCaptchaUrl = () => async (dispatch: any) => {
 }
 
 export const logout = () => async (dispatch: any) => {
-    let response = await authAPI.logout();
-    if (response.data.resultCode === 0) {
+    let LoginData = await authAPI.logout();
+    if (LoginData.resultCode === ResultCodesEnum.Success) {
         dispatch(setAuthUserData(null, null, null, false));
     }
 }

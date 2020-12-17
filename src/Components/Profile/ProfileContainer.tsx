@@ -30,7 +30,7 @@ type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
 class ProfileContainer extends React.Component<PropsType & RouteComponentProps> {
 
   refreshProfile() {
-    //@ts-ignores
+    // @ts-ignores
     let userId = this.props.match.params.userId;
     if (!userId) {
       userId = this.props.authoraizedUserId;
@@ -73,7 +73,7 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => ({
 })
 
 export default compose(
-  //@ts-ignore
+  // @ts-ignore
   connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {getUserProfile, getUserStatus, updateStatus, savePhoto, saveProfile}),
   withRouter,
   withAuthRedirect

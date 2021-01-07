@@ -7,10 +7,10 @@ import { ProfileType } from '../../TSTypes/TSTypesFile';
 type PropsType = {
   profile: ProfileType | null
   status: string
+  isOwner: boolean
   updateStatus: () => void
-  isOwner: () => void
-  savePhoto: () => void
-  saveProfile: () => void
+  savePhoto: (file: File) => void
+  saveProfile: (profile: ProfileType) => Promise<any>
 }
 
 const Profile: React.FC<PropsType> = (props) => {

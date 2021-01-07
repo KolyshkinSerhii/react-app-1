@@ -1,11 +1,10 @@
 import { AppStateType, InferActionsType } from './Redux-store';
 import { ThunkAction } from 'redux-thunk';
-import { usersAPI } from '../API/API';
+import { usersAPI } from "../API/Users-API";
 import { UserType } from '../TSTypes/TSTypesFile';
 import { objectInArray } from '../Utilities/Helpers/ObjectsInArray';
 import { actionTypes } from 'redux-form';
 
-const SET_CURRENT_PAGE = 'network/usersPage/SET-CURRENT-PAGE'
 
 const initialState = {
     users: [] as Array<UserType>,
@@ -18,7 +17,7 @@ const initialState = {
 
 export type InitialStateType = typeof initialState
 
-const usersReducer = (state = initialState, action: ActionsTypes | ActionTypeForRC): InitialStateType => {
+const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
     switch (action.type) {
         case 'network/usersPage/FOLLOW':
@@ -34,7 +33,7 @@ const usersReducer = (state = initialState, action: ActionsTypes | ActionTypeFor
             case 'network/usersPage/SET-USERS': {
                     return { ...state, users: action.users }
                 }
-            case SET_CURRENT_PAGE: {
+            case 'network/usersPage/SET-CURRENT-PAGE': {
                     return { ...state, currentPage: action.currentPage }
                 }
             case 'network/usersPage/SET-TOTAL-COUNT': {
@@ -53,8 +52,6 @@ const usersReducer = (state = initialState, action: ActionsTypes | ActionTypeFor
                     return state;
     }
 }
-
-type ActionTypeForRC = SetCurrentPageType 
 
 type ActionsTypes = InferActionsType<typeof actions>
 
@@ -85,18 +82,12 @@ export const actions = {
         type: 'TOGGLE-IS-FOLLOWING',
         inProgress,
         userId
-    } as const)
+    } as const),
+    setCurrentPage:(currentPage: number) => ({
+        type: 'network/usersPage/SET-CURRENT-PAGE',
+        currentPage} as const)
 }
 
-type SetCurrentPageType = {
-    type: typeof SET_CURRENT_PAGE,
-    currentPage: number
-}
-
-export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({
-    type: SET_CURRENT_PAGE,
-    currentPage
-})
 
 export const requestUsers = (currentPage: number, pageSize: number): ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => async (dispatch) => {
 

@@ -1,13 +1,9 @@
-import { AppStateType } from './Redux-store';
-import { usersAPI, profileAPI } from '../API/API';
-import {stopSubmit} from 'redux-form'
+import { AppStateType, InferActionsType } from './Redux-store';
+import { profileAPI } from "../API/Profile-API";
+import { usersAPI } from "../API/Users-API";
+import {FormAction, stopSubmit} from 'redux-form'
 import { PostType, ProfileType, PhotosType } from '../TSTypes/TSTypesFile';
 import { ThunkAction } from 'redux-thunk';
-
-const ADD_POST = 'network/profile/UPDATE-NEW-POST-TEXT';
-const SET_USER_PROFILE = 'network/profile/SET-USER-PROFILE';
-const SET_STATUS = 'network/profile/SET-STATUS';
-const SET_PHOTO = 'network/profile/SET-PHOTO'
 
 
 let initialState = {
@@ -29,7 +25,7 @@ export type InitialStateType = typeof initialState
 
 const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
-        case ADD_POST:
+        case 'network/profile/UPDATE-NEW-POST-TEXT':
             let newPost = {
                 id: 3,
                 message: action.addPost,
@@ -39,19 +35,19 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
                 ...state,
                 posts: [...state.posts, newPost]
             }
-            case SET_USER_PROFILE: {
+            case 'network/profile/SET-USER-PROFILE': {
                 return {
                     ...state,
                     profile: action.profile
                 };
             }
-            case SET_STATUS: {
+            case 'network/profile/SET-STATUS': {
                 return {
                     ...state,
                     status: action.status
                 };
             }
-            case SET_PHOTO: {
+            case 'network/profile/SET-PHOTO': {
                 return {
                     ...state,
                     profile: {...state.profile, photos: action.photos} as ProfileType
@@ -62,72 +58,62 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
     }
 }
 
-type ActionsTypes = addPostActionCreatorType | setPhotoType | setStatusType | setUserProfileType
+type ActionsTypes = InferActionsType<typeof actions>
 
-type addPostActionCreatorType = {
-    type: typeof ADD_POST
-    addPost: string
+export const actions = {
+    addPostActionCreator: (addPost: string) => ({
+        type: 'network/profile/UPDATE-NEW-POST-TEXT',
+        addPost
+    } as const),
+    setPhoto: (photos: PhotosType) => ({
+        type: 'network/profile/SET-PHOTO',
+        photos
+    } as const),
+    setStatus: (status: string) => ({
+        type: 'network/profile/SET-STATUS',
+        status
+    } as const),
+    setUserProfile: (profile: ProfileType) => ({
+        type: 'network/profile/SET-USER-PROFILE',
+        profile
+    } as const)
 }
-export const addPostActionCreator = (addPost: string): addPostActionCreatorType => ({
-    type: ADD_POST,
-    addPost
-})
-type setPhotoType = {
-    type: typeof SET_PHOTO
-    photos: PhotosType
-}
-export const setPhoto = (photos: PhotosType): setPhotoType => ({
-    type: SET_PHOTO,
-    photos
-})
-type setStatusType = {
-    type: typeof SET_STATUS
-    status: string
-}
-export const setStatus = (status: string): setStatusType => ({
-    type: SET_STATUS,
-    status
-})
-type setUserProfileType = {
-    type: typeof SET_USER_PROFILE
-    profile: ProfileType
-}
-export const setUserProfile = (profile: ProfileType): setUserProfileType => ({
-    type: SET_USER_PROFILE,
-    profile
-})
 
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes | FormAction>
 
 export const getUserProfile = (userId: number): ThunkType => async (dispatch) => {
     let data = await usersAPI.getUserId(userId);
-    dispatch(setUserProfile(data))
+    dispatch(actions.setUserProfile(data))
 }
 
 export const getUserStatus = (userId:number): ThunkType => async (dispatch) => {
-    let response = await profileAPI.getStatus(userId);
-    dispatch(setStatus(response.data))
+    let data = await profileAPI.getStatus(userId);
+    dispatch(actions.setStatus(data))
 }
 
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
-    let response = await profileAPI.updateStatus(status);
-    if (response.data.resultCode === 0) {
-        dispatch(setStatus(status))
+    let data = await profileAPI.updateStatus(status);
+    if (data.resultCode === 0) {
+        dispatch(actions.setStatus(status))
     }
 }
 
-export const savePhoto = (file: any): ThunkType => async (dispatch) => {
+export const savePhoto = (file: File): ThunkType => async (dispatch) => {
     let response = await profileAPI.savePhoto(file);
         if (response.data.resultCode === 0) {
-            dispatch(setPhoto(response.data.data.photos))
+            dispatch(actions.setPhoto(response.data.data.photos))
         }
 }
 
-export const saveProfile = (file: any) => async (dispatch: any, getState: any) => {
+export const saveProfile = (file: ProfileType): ThunkType => async (dispatch, getState) => {
     const userId = getState().auth.userId;
     let response = await profileAPI.saveProfile(file);
         if (response.data.resultCode === 0) {
-            dispatch(getUserProfile(userId));
+            if (userId != null) {
+                dispatch(getUserProfile(userId))
+                } else {
+                    throw new Error("userId can't be null")
+                };
         } else {
             let wrongNetwork = response.data.messages[0]
               .slice(

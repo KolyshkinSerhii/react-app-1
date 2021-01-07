@@ -11,8 +11,6 @@ const Header = (props) => {
         </div>
         <div className={s.logo}>RIDERS CLUB</div>
       </div>
-      <div> free@samuraijs.com </div>
-      <div> free </div>
       <div className={s.loginBlock}>
         {props.isAuth ? 
         <div>{props.login} | <button onClick={props.logout} >Logout</button> </div>

@@ -63,7 +63,7 @@ const messagesReducer = (state = initialState, action: ActionTypes): InitialStat
 
 type ActionTypes = InferActionsType<typeof actions>
 export const actions = {
-    sendMessageCreator: (newMessageBody: string) => ({ type: 'network/messages/SEND-MESSAGE', newMessageBody } as const)
+    sendNewMessage: (newMessageBody: string) => ({ type: 'network/messages/SEND-MESSAGE', newMessageBody } as const)
 }
 
 export default messagesReducer;

@@ -5,7 +5,6 @@ import Message from './Message/Message';
 import SendMessage from './Message/DialogsForm/SendMessageForm';
 
 
-
 const Dialogs = (props) => {
 
     let state = props.messagesPage;

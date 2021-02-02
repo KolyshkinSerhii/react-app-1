@@ -13,10 +13,15 @@ const initialState = {
     pageSize: 12,
     currentPage: 1,
     isFetching: true,
-    followingInProgress: [] as Array<number> //Array of users ID
+    followingInProgress: [] as Array<number>, //Array of users ID
+    filter: {
+        term: '',
+        friend: null as null|boolean
+    }
 }
 
 export type InitialStateType = typeof initialState
+export type FilterType = typeof initialState.filter
 
 const usersReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
 
@@ -42,6 +47,9 @@ const usersReducer = (state = initialState, action: ActionsTypes): InitialStateT
                 }
             case 'IS-FETCHING': {
                     return { ...state, isFetching: action.isFetching }
+                }
+            case 'network/usersPage/SET-FILTER': {
+                    return { ...state, filter: action.payload }
                 }
             case 'TOGGLE-IS-FOLLOWING': {
                     return {
@@ -86,15 +94,21 @@ export const actions = {
     } as const),
     setCurrentPage:(currentPage: number) => ({
         type: 'network/usersPage/SET-CURRENT-PAGE',
-        currentPage} as const)
+        currentPage} as const),
+    setFilter: (filter: FilterType) => ({
+        type: 'network/usersPage/SET-FILTER',
+        payload: filter
+    } as const)
 }
 
 
-export const requestUsers = (currentPage: number, pageSize: number): ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => async (dispatch) => {
+export const requestUsers = (currentPage: number, pageSize: number, filter: FilterType): ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> => async (dispatch) => {
 
     dispatch(actions.isFetchingNow(true));
+    dispatch(actions.setCurrentPage(currentPage));
+    dispatch(actions.setFilter(filter))
 
-    let data = await usersAPI.getUsers(currentPage, pageSize)
+    let data = await usersAPI.getUsers(currentPage, pageSize, filter.term, filter.friend)
     dispatch(actions.isFetchingNow(false));
     dispatch(actions.setUsers(data.items));
     dispatch(actions.setTotalUsersCount(data.totalCount));
